@@ -96,4 +96,12 @@ n = db.execute('SELECT COUNT(*) c FROM scale_results WHERE patient_id=?',(pid,))
 rep = db.execute('SELECT risk_count,status FROM reports WHERE patient_id=?',(pid,)).fetchone()
 print(f'8. 落库校验：量表结果 {n} 条；异常指标 {rep["risk_count"]} 项；报告状态={rep["status"]}')
 assert n == 21
+
+# 9 量表目录接口
+r = c.get('/api/scales')
+assert r.status_code == 200, r.status_code
+d = r.get_json()
+assert d['count'] == 21 and len(d['scales']) == 21, d['count']
+assert d['scales'][0]['id'] == 'BADL' and d['scales'][0]['items'] > 0
+print('9. 量表目录接口通过，共', d['count'], '张')
 print('\n===== 全部端到端流程验证通过 =====')
