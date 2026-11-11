@@ -648,6 +648,20 @@ def print_report(pid):
     return render_template('print.html', rep=rep)
 
 
+# ---------------- 量表目录（只读元数据接口） ----------------
+@app.route('/api/scales')
+def api_scales():
+    rows = [{
+        'id': s['id'],
+        'name': s['name'],
+        'abbr': s.get('abbr', ''),
+        'domain': s.get('domain', ''),
+        'mode': s.get('mode', ''),
+        'items': len(s.get('items', [])),
+    } for s in _scales()]
+    return jsonify({'count': len(rows), 'scales': rows})
+
+
 # ---------------- 健康检查（最小可验证功能） ----------------
 @app.route('/healthz')
 def healthz():

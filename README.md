@@ -109,6 +109,14 @@ python _e2e_test.py
 - `200`：数据库连通且 21 张量表配置已加载；
 - `503`：数据库异常或量表数为 0，此时 `status` 为 `degraded`。
 
+### 量表目录接口（/api/scales）
+
+返回当前生效的 21 张量表元数据（不含题目选项），供前端或外部系统查询：
+
+```json
+{"count":21,"scales":[{"id":"BADL","name":"Barthel指数","abbr":"Barthel Index","domain":"躯体功能","mode":"自评/他评","items":10}]}
+```
+
 ## 七、与课程需求的对应关系
 
 | 需求分析中的要求 | 实现位置 |
