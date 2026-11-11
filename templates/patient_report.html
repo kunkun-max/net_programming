@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h1>第四步 · 老年综合评估报告</h1>
+  <p class="muted">患者：{{ p['name'] }}（{{ p['gender'] }}，{{ p['age'] }}岁）</p>
+
+  {% if results|length < total_scale %}
+  <div class="flash">当前仅完成 {{ results|length }} / {{ total_scale }} 张量表，请完成全部21张量表后生成综合报告。
+    <a href="{{ url_for('patient_scale_list', pid=p['id']) }}">前往量表列表 →</a>
+  </div>
+  {% elif not rep %}
+  <form method="post" action="{{ url_for('generate_report', pid=p['id']) }}">
+    <button class="btn green">21张量表已全部完成，一键生成综合评估报告</button>
+  </form>
+  {% else %}
+  <p>
+    <a class="btn" href="{{ url_for('print_report', pid=p['id']) }}" target="_blank">打印 / 导出PDF</a>
+    {% if session.get('role')=='doctor' %}
+      <a class="btn gray" href="{{ url_for('doctor_detail', pid=p['id']) }}">前往医护审核</a>
+    {% endif %}
+  </p>
+  {{ rep['content']|safe }}
+  {% endif %}
+</div>
+{% endblock %}
+{% block extra %}{% endblock %}

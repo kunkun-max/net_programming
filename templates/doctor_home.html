@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h1>医护工作台</h1>
+  <table>
+    <tr><th>档案号</th><th>姓名</th><th>性别/年龄</th><th>预问诊</th><th>量表进度</th><th>报告状态</th><th>操作</th></tr>
+    {% for p in patients %}
+    <tr>
+      <td>{{ p['id'] }}</td>
+      <td>{{ p['name'] }}</td>
+      <td>{{ p['gender'] }} / {{ p['age'] }}</td>
+      <td>
+        {% if p['previsit_status']=='已完成' %}<span class="tag ok">已完成</span>
+        {% else %}<span class="tag info">未完成</span>{% endif %}
+      </td>
+      <td>{{ p['scale_n'] }} / {{ total_scale }}</td>
+      <td>
+        {% if p['report_status']=='已通过' %}<span class="tag ok">已通过</span>
+        {% elif p['report_status']=='已退回' %}<span class="tag bad">已退回</span>
+        {% elif p['report_status'] %}<span class="tag warn">待审核</span>
+        {% else %}<span class="tag info">未生成</span>{% endif %}
+      </td>
+      <td><a class="btn" style="padding:6px 14px;font-size:16px;"
+             href="{{ url_for('doctor_detail', pid=p['id']) }}">查看/审核</a></td>
+    </tr>
+    {% else %}
+    <tr><td colspan="7" class="muted" style="text-align:center;">暂无患者档案</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

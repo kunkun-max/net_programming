@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h1>第一步 · 新建评估档案（基本信息）</h1>
+  <form method="post">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 24px;">
+      <div>
+        <label>姓名 *</label><input type="text" name="name" required>
+        <label>性别</label>
+        <select name="gender"><option>男</option><option>女</option></select>
+        <label>年龄</label><input type="number" name="age" min="50" max="120">
+        <label>本人联系电话</label><input type="tel" name="phone">
+      </div>
+      <div>
+        <label>身份证号（选填）</label><input type="text" name="id_card">
+        <label>家属/照护者姓名（协助填写）</label><input type="text" name="contact_name">
+        <label>家属联系电话</label><input type="tel" name="contact_phone">
+      </div>
+    </div>
+    <button class="btn" style="margin-top:20px;">保存并进入预问诊 →</button>
+  </form>
+</div>
+{% endblock %}

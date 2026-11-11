@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card" style="max-width:900px;margin:0 auto;">
+  <div style="text-align:right;" class="no-print">
+    <button class="btn" onclick="window.print()">打印 / 另存为PDF</button>
+  </div>
+  {{ rep['content']|safe }}
+  <h2>医护审核信息</h2>
+  <p>审核状态：
+    {% if rep['status']=='已通过' %}<span class="tag ok">已通过</span>
+    {% elif rep['status']=='已退回' %}<span class="tag bad">已退回</span>
+    {% else %}<span class="tag warn">{{ rep['status'] }}</span>{% endif %}
+  </p>
+  <p>审核意见：{{ rep['doctor_comment'] or '（暂无）' }}</p>
+</div>
+{% endblock %}

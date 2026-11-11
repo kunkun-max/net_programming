@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h1>第二步 · 预问诊病史采集</h1>
+  <p class="muted">患者：{{ p['name'] }}（{{ p['gender'] }}，{{ p['age'] }}岁）。
+     系统模拟临床医生「主诉—现病史—既往史—个人史—家族史」问诊逻辑分步引导；
+     老人可由家属/护士协助填写，可使用手机自带语音输入功能口述。</p>
+  <form method="post">
+    <label>1. 主诉（这次就医主要哪里不舒服？持续多久？）</label>
+    <textarea name="chief_complaint" placeholder="例如：头晕、走路不稳约2周">{{ p['chief_complaint'] or '' }}</textarea>
+
+    <label>2. 现病史（症状开始时间、变化情况、有无诱发/缓解因素）</label>
+    <textarea name="present_illness">{{ p['present_illness'] or '' }}</textarea>
+
+    <label>3. 既往史（慢性病、手术史、住院史，如高血压/糖尿病/脑梗等）</label>
+    <textarea name="past_history">{{ p['past_history'] or '' }}</textarea>
+
+    <label>4. 用药情况（长期口服药名称、剂量、每日次数）</label>
+    <textarea name="medication" placeholder="例如：苯磺酸氨氯地平5mg 每日1次">{{ p['medication'] or '' }}</textarea>
+
+    <label>5. 过敏史（药物/食物过敏）</label>
+    <textarea name="allergy">{{ p['allergy'] or '' }}</textarea>
+
+    <label>6. 家族史（直系亲属有无遗传病、肿瘤、痴呆等）</label>
+    <textarea name="family_history">{{ p['family_history'] or '' }}</textarea>
+
+    <label>7. 生活习惯（吸烟、饮酒、饮食、运动、睡眠）</label>
+    <textarea name="lifestyle">{{ p['lifestyle'] or '' }}</textarea>
+
+    <div style="background:#fffaf0;border:1px solid #f6ad55;color:#9c4221;padding:12px 16px;border-radius:8px;margin-top:16px;">
+      温馨提示：如出现胸痛、呼吸困难、意识不清、偏瘫、剧烈头痛等危急症状，请立即停止线上填写，拨打 120 或就近急诊。
+    </div>
+    <button class="btn" style="margin-top:18px;">保存预问诊，进入量表评估 →</button>
+  </form>
+</div>
+{% endblock %}

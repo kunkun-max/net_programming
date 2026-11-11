@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h1>老年人预问诊与老年综合评估系统</h1>
+  <p class="muted">以预问诊为入口，完成老年综合评估 21 张量表采集，自动生成老年综合评估报告，
+     实现「评估—干预—回访」闭环管理。本系统为轻量化实现：Flask + SQLite + 原生网页，无需安装数据库与前端构建工具。</p>
+  <div class="grid4" style="margin-top:20px;">
+    <div class="stat"><div class="num">{{ stats.patient_n }}</div><div class="lab">评估档案</div></div>
+    <div class="stat" style="background:linear-gradient(135deg,#2f855a,#48bb78);"><div class="num">{{ stats.finished_n }}</div><div class="lab">预问诊完成</div></div>
+    <div class="stat" style="background:linear-gradient(135deg,#b7791f,#ecc94b);"><div class="num">{{ stats.scale_n }}</div><div class="lab">评估量表</div></div>
+    <div class="stat" style="background:linear-gradient(135deg,#9b2c2c,#fc8181);"><div class="num">{{ stats.report_n }}</div><div class="lab">评估报告</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>患者端（无需登录，家属可协助）</h2>
+  <p>适老化大字号界面，按「基本信息 → 预问诊病史 → 21张量表 → 查看报告」四步完成。</p>
+  <a class="btn" href="{{ url_for('patient_new') }}">① 新建评估档案 / 开始预问诊</a>
+</div>
+
+<div class="card">
+  <h2>医护端</h2>
+  <p>查看患者列表与量表进度、审核自动生成的综合评估报告、填写审核意见。演示账号：doctor / 123456</p>
+  <a class="btn green" href="{{ url_for('login') }}">② 进入医护工作台</a>
+</div>
+
+<div class="card">
+  <h2>平台管理端</h2>
+  <p>21张量表库浏览、量表使用情况与风险分布统计、服务量统计。演示账号：admin / 123456</p>
+  <a class="btn gray" href="{{ url_for('login') }}">③ 进入管理后台</a>
+</div>
+{% endblock %}

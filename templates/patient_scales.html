@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h1>第三步 · 21张老年综合评估量表</h1>
+  <p class="muted">患者：{{ p['name'] }}　|　评估方式包含自评、家属他评、护士施测，量表已按评估域分组。</p>
+  <h3>完成进度：{{ done|length }} / {{ total }}</h3>
+  <div class="progress"><div style="width:{{ progress }}%">{{ progress }}%</div></div>
+  <p>
+    {% if done|length == total %}
+      <form method="post" action="{{ url_for('generate_report', pid=p['id']) }}" style="display:inline;">
+        <button class="btn green">全部完成，一键生成综合评估报告</button>
+      </form>
+    {% else %}
+      <a class="btn gray" href="{{ url_for('patient_report', pid=p['id']) }}">暂存，稍后继续</a>
+    {% endif %}
+  </p>
+</div>
+
+{% for domain, scales in domains.items() %}
+<div class="card">
+  <h2><span class="domain-badge">{{ domain }}域</span></h2>
+  <table>
+    <tr><th style="width:60px;">序号</th><th>量表名称</th><th style="width:140px;">评估方式</th><th style="width:110px;">状态</th><th style="width:180px;">操作</th></tr>
+    {% for s in scales %}
+    {% set r = done.get(s.id) %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td><b>{{ s.name }}</b><br><span class="muted">{{ s.abbr }}</span></td>
+      <td>{{ s.mode }}</td>
+      <td>
+        {% if r %}
+          <span class="tag ok">已完成</span><br><span class="muted">{{ r['score'] }}分 · {{ r['risk_level'] }}</span>
+        {% else %}
+          <span class="tag info">待评估</span>
+        {% endif %}
+      </td>
+      <td>
+        <a class="btn {{ 'gray' if r else '' }}" style="padding:6px 14px;font-size:16px;"
+           href="{{ url_for('patient_scale', pid=p['id'], sid=s.id) }}">
+           {{ '重新评估' if r else '开始答题' }}</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endfor %}
+{% endblock %}

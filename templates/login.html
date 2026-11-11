@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}登录 - 老年综合评估系统{% endblock %}
+{% block body %}
+<div class="card" style="max-width:480px;margin:40px auto;">
+  <h1>医护 / 管理员登录</h1>
+  <form method="post">
+    <label>用户名</label>
+    <input type="text" name="username" required autofocus>
+    <label>密码</label>
+    <input type="password" name="password" required>
+    <button class="btn" style="width:100%;margin-top:20px;">登 录</button>
+  </form>
+  <p class="muted" style="margin-top:14px;">演示账号：doctor / 123456（医护），admin / 123456（管理员）</p>
+</div>
+{% endblock %}

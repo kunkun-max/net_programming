@@ -1,0 +1,58 @@
+<div class="report-box">
+  <h1 style="text-align:center;">老年综合评估报告（CGA）</h1>
+  <p style="text-align:center;" class="muted">报告生成时间：{{ gen_time }}　|　报告状态：系统自动生成，待医护审核</p>
+
+  <h2>一、患者基本信息</h2>
+  <table>
+    <tr><th style="width:110px;">姓名</th><td>{{ p['name'] }}</td><th style="width:110px;">性别/年龄</th><td>{{ p['gender'] }} / {{ p['age'] }}岁</td></tr>
+    <tr><th>联系电话</th><td>{{ p['phone'] or '—' }}</td><th>家属及电话</th><td>{{ p['contact_name'] or '—' }} {{ p['contact_phone'] or '' }}</td></tr>
+    <tr><th>主诉</th><td colspan="3">{{ p['chief_complaint'] or '—' }}</td></tr>
+    <tr><th>现病史</th><td colspan="3">{{ p['present_illness'] or '—' }}</td></tr>
+    <tr><th>既往史</th><td colspan="3">{{ p['past_history'] or '—' }}</td></tr>
+    <tr><th>用药情况</th><td colspan="3">{{ p['medication'] or '—' }}</td></tr>
+    <tr><th>过敏史</th><td colspan="3">{{ p['allergy'] or '—' }}</td></tr>
+    <tr><th>家族史</th><td colspan="3">{{ p['family_history'] or '—' }}</td></tr>
+    <tr><th>生活习惯</th><td colspan="3">{{ p['lifestyle'] or '—' }}</td></tr>
+  </table>
+
+  <h2>二、各评估域得分汇总</h2>
+  {% for domain, rows in domain_stat.items() %}
+  <h3>【{{ domain }}域】</h3>
+  <table>
+    <tr><th>量表</th><th style="width:90px;">得分</th><th style="width:160px;">风险/等级判定</th></tr>
+    {% for r in rows %}
+    <tr>
+      <td>{{ r['scale_name'] }}</td>
+      <td>{{ r['score'] }}</td>
+      <td>{{ r['risk_level'] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endfor %}
+
+  <h2>三、异常指标汇总</h2>
+  {% if abnormal %}
+  <table>
+    <tr><th>异常项目</th><th style="width:90px;">得分</th><th style="width:150px;">判定</th><th>健康指导建议</th></tr>
+    {% for a in abnormal %}
+    <tr>
+      <td>{{ a.name }}</td><td>{{ a.score }}</td>
+      <td><span class="tag bad">{{ a.level }}</span></td>
+      <td>{{ a.advice }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p>本次评估未发现明显异常指标。</p>
+  {% endif %}
+
+  <h2>四、综合评估结论</h2>
+  <p style="font-size:19px;">{{ conclusion }}</p>
+
+  <h2>五、干预与随访建议（闭环管理）</h2>
+  <p>由老年医学科医师、护士、营养师、康复师、心理师组成多学科团队，依据上述异常维度制定个性化干预方案；
+     高风险人群48小时内启动干预，出院后按风险分层随访（高风险每2-4周、中风险每1-3月、低风险每6-12月复评），
+     实现「评估—干预—回访—动态复评」全流程闭环管理。</p>
+
+  <p class="muted" style="margin-top:24px;">注：本报告由系统依据量表评分规则自动生成，仅供临床参考，最终诊疗方案以经治医师审核意见为准。</p>
+</div>

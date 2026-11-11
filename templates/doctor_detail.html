@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h1>患者详情 · {{ p['name'] }}</h1>
+  <p class="muted">{{ p['gender'] }}，{{ p['age'] }}岁　电话：{{ p['phone'] or '—' }}
+     　家属：{{ p['contact_name'] or '—' }} {{ p['contact_phone'] or '' }}</p>
+
+  <h2>预问诊信息</h2>
+  <table>
+    <tr><th style="width:110px;">主诉</th><td>{{ p['chief_complaint'] or '—' }}</td></tr>
+    <tr><th>现病史</th><td>{{ p['present_illness'] or '—' }}</td></tr>
+    <tr><th>既往史</th><td>{{ p['past_history'] or '—' }}</td></tr>
+    <tr><th>用药情况</th><td>{{ p['medication'] or '—' }}</td></tr>
+    <tr><th>过敏史</th><td>{{ p['allergy'] or '—' }}</td></tr>
+    <tr><th>家族史</th><td>{{ p['family_history'] or '—' }}</td></tr>
+    <tr><th>生活习惯</th><td>{{ p['lifestyle'] or '—' }}</td></tr>
+  </table>
+
+  <h2>21张量表评分结果</h2>
+  <table>
+    <tr><th>量表</th><th style="width:90px;">得分</th><th style="width:170px;">风险判定</th><th style="width:120px;">评估方式</th></tr>
+    {% for r in results %}
+    <tr>
+      <td>{{ r['scale_name'] }}</td><td>{{ r['score'] }}</td>
+      <td>{{ r['risk_level'] }}</td><td>{{ r['mode'] }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4" class="muted" style="text-align:center;">尚未完成任何量表</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+{% if rep %}
+<div class="card">
+  <h2>综合评估报告审核</h2>
+  {{ rep['content']|safe }}
+  <form method="post" action="{{ url_for('audit_report', pid=p['id']) }}" style="margin-top:18px;">
+    <label>医生审核意见</label>
+    <textarea name="doctor_comment" placeholder="可对自动报告进行批注、修正与补充">{{ rep['doctor_comment'] or '' }}</textarea>
+    <label>审核结论</label>
+    <select name="status">
+      <option value="已通过">审核通过（生成正式报告）</option>
+      <option value="已退回">退回补充评估</option>
+    </select>
+    <button class="btn green" style="margin-top:14px;">提交审核结果</button>
+    <a class="btn gray" href="{{ url_for('print_report', pid=p['id']) }}" target="_blank">查看打印版</a>
+  </form>
+</div>
+{% else %}
+<div class="card"><p class="muted">患者尚未生成综合评估报告（需完成全部21张量表）。</p></div>
+{% endif %}
+{% endblock %}

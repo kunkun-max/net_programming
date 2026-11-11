@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="card">
+  <h1>平台管理后台</h1>
+  <div class="grid4">
+    {% for k, v in svc.items() %}
+    <div class="stat" style="background:linear-gradient(135deg,#4a5568,#718096);">
+      <div class="num">{{ v }}</div><div class="lab">{{ k }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="card">
+  <h2>量表库管理（21张量表）</h2>
+  <table>
+    <tr><th style="width:50px;">序号</th><th>量表名称</th><th>缩写</th><th>评估域</th><th>评估方式</th><th style="width:100px;">已采集数</th><th style="width:90px;">状态</th></tr>
+    {% for s in scales %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td>{{ s.name }}</td>
+      <td>{{ s.abbr }}</td>
+      <td>{{ s.domain }}</td>
+      <td>{{ s.mode }}</td>
+      <td>{{ used.get(s.id, 0) }}</td>
+      <td><span class="tag ok">启用中</span></td>
+    </tr>
+    {% endfor %}
+  </table>
+  <p class="muted">说明：轻量化版量表题库集中配置于 scales_data.py，支持随时扩充题目、调整评分规则与阈值后热更新，无需改动数据库结构。</p>
+</div>
+
+<div class="card">
+  <h2>风险分布统计</h2>
+  {% if risk_rows %}
+  <table>
+    <tr><th>风险/等级</th><th style="width:200px;">出现次数</th><th>分布</th></tr>
+    {% set maxn = risk_rows[0]['n'] %}
+    {% for r in risk_rows %}
+    <tr>
+      <td>{{ r['risk_level'] }}</td><td>{{ r['n'] }}</td>
+      <td><div class="progress" style="margin:0;height:20px;">
+        <div style="width:{{ (r['n']/maxn*100)|round }}%;background:#dd6b20;line-height:20px;font-size:13px;">&nbsp;</div>
+      </div></td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p class="muted">暂无评估数据。</p>
+  {% endif %}
+</div>
+{% endblock %}

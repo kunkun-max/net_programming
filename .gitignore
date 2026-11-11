@@ -1,0 +1,19 @@
+# 运行期数据库（含演示患者数据，禁止入库）
+cga.db
+*.db
+
+# Python 缓存与虚拟环境
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 自测失败时的调试输出
+_dbg*.txt
+
+# 临时备份
+*.bak
+
+# 作业生成的 Word 产物（源文档以 .md 维护）
+项目任务四_最小功能实验报告.docx
+AGENT.md组间互审报告.docx
