@@ -662,6 +662,23 @@ def api_scales():
     return jsonify({'count': len(rows), 'scales': rows})
 
 
+# ---------------- 量表详情（只读接口） ----------------
+@app.route('/api/scales/<code>')
+def api_scale_detail(code):
+    s = _scale_map().get(code.upper())
+    if not s:
+        return jsonify({'error': 'scale not found', 'code': code}), 404
+    return jsonify({
+        'id': s['id'],
+        'name': s['name'],
+        'abbr': s.get('abbr', ''),
+        'domain': s.get('domain', ''),
+        'mode': s.get('mode', ''),
+        'item_count': len(s.get('items', [])),
+        'items': s.get('items', []),
+    })
+
+
 # ---------------- 健康检查（最小可验证功能） ----------------
 @app.route('/healthz')
 def healthz():

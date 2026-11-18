@@ -104,4 +104,12 @@ d = r.get_json()
 assert d['count'] == 21 and len(d['scales']) == 21, d['count']
 assert d['scales'][0]['id'] == 'BADL' and d['scales'][0]['items'] > 0
 print('9. 量表目录接口通过，共', d['count'], '张')
+
+# 10 量表详情接口
+r = c.get('/api/scales/BADL')
+assert r.status_code == 200, r.status_code
+sd = r.get_json()
+assert sd['id'] == 'BADL' and sd['item_count'] == 10 and len(sd['items']) == 10, sd
+assert c.get('/api/scales/NOT_EXIST').status_code == 404
+print('10. 量表详情接口通过：BADL 共', sd['item_count'], '题；未知量表返回 404')
 print('\n===== 全部端到端流程验证通过 =====')

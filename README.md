@@ -117,6 +117,14 @@ python _e2e_test.py
 {"count":21,"scales":[{"id":"BADL","name":"Barthel指数","abbr":"Barthel Index","domain":"躯体功能","mode":"自评/他评","items":10}]}
 ```
 
+### 量表详情接口（/api/scales/&lt;code&gt;）
+
+按量表编码返回完整题目与选项，例如 `GET /api/scales/BADL`；编码不存在时返回 `404` 与 `{"error":"scale not found"}`。
+
+```json
+{"id":"BADL","name":"Barthel指数","domain":"躯体功能","item_count":10,"items":[{"q":"进食","opts":[["需极大帮助",0],["需部分帮助",5],["可独立完成",10]]}]}
+```
+
 ## 七、与课程需求的对应关系
 
 | 需求分析中的要求 | 实现位置 |
